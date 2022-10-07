@@ -1,47 +1,36 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
 import {styles} from './styles';
 
-const ANSWER = 'SELAM';
-const arrayAnswer = ANSWER.split('');
+const Board = ({answer}) => {
+  const state = useSelector(state => state);
+  const gameMap = state.gameMap;
 
-let gameMap = [
-  {word: ['h', 'e', 'l', 'l', 'o'], isCompleted: true},
-  {word: ['k', 'i', 't', 'a', 'p'], isCompleted: true},
-  {word: ['s', 'e', 'a', 'l', 'm'], isCompleted: true},
-  {word: ['s', 'e', '', '', ''], isCompleted: false},
-  {word: ['', '', '', '', ''], isCompleted: false},
-  {word: ['', '', '', '', ''], isCompleted: false},
-];
+  const arrayAnswer = answer.split('');
 
-const currentCell = 11;
+  const cellHasValue = value => {
+    return value !== '';
+  };
 
-const mapRow = parseInt(currentCell / 5);
-const column = currentCell % 5;
+  const getColor = (key, index) => {
+    let upperKey = key;
+    let backgrounColor = colors.darkgrey;
+    if (answer.includes(upperKey)) {
+      backgrounColor = colors.secondary;
+    }
+    if (arrayAnswer[index] === upperKey) {
+      backgrounColor = colors.primary;
+    }
+    return backgrounColor;
+  };
 
-const cellHasValue = value => {
-  return value !== '';
-};
-
-const getColor = (key, index) => {
-  let upperKey = key.replace('i', 'İ').toUpperCase();
-  let backgrounColor = colors.darkgrey;
-  if (ANSWER.includes(upperKey)) {
-    backgrounColor = colors.secondary;
-  }
-  if (arrayAnswer[index] === upperKey) {
-    backgrounColor = colors.primary;
-  }
-  return backgrounColor;
-};
-
-const Board = props => {
   return (
     <View style={styles.container}>
       {gameMap.map((row, index) => (
         <View key={index} style={styles.row}>
-          {row.word.map((cell, cellIndex) => (
+          {row.guess.map((cell, cellIndex) => (
             <View
               key={index + cellIndex}
               style={[
@@ -61,7 +50,7 @@ const Board = props => {
           ))}
         </View>
       ))}
-      <Text>a component</Text>
+      <Text style={{color: 'white'}}>{answer}</Text>
     </View>
   );
 };

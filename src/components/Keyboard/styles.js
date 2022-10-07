@@ -1,6 +1,6 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import {colors} from '../constants/colors';
-import {keys} from '../constants/keys';
+import {colors} from '../../constants/colors';
+import {keys} from '../../constants/keys';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
