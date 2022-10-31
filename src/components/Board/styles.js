@@ -21,9 +21,11 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   row: {
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
+    width: DEVICE_WIDTH * 0.94,
     flexDirection: 'row',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
   emptyCell: {
     width: cellWidth,

@@ -13,5 +13,15 @@ const setCurrentRow = value => ({
   type: 'SET_CURRENT_ROW',
   payload: {value: value},
 });
+const wrongGuessShake = value => ({
+  type: 'SHAKE',
+  payload: {value: value},
+});
 
-export {setGameWon, resetGameState, setCurrentColumn, setCurrentRow};
+export {
+  setGameWon,
+  resetGameState,
+  setCurrentColumn,
+  setCurrentRow,
+  wrongGuessShake,
+};

@@ -7,6 +7,7 @@ const initialState = {
   isWin: false,
   currentRow: 0,
   currentColumn: 0,
+  shakeWrongGuess: false,
 };
 
 const gameStateReducer = (state = initialState, action) => {
@@ -22,16 +23,15 @@ const gameStateReducer = (state = initialState, action) => {
       return {...state, currentColumn: action.payload.value};
     case 'SET_CURRENT_ROW':
       return {...state, currentRow: action.payload.value};
+    case 'SHAKE':
+      return {...state, shakeWrongGuess: action.payload.value};
     default:
       return state;
   }
 };
 
 function newWord() {
-  return words[Math.floor(Math.random() * words.length)]
-    .split('i')
-    .join('İ')
-    .toUpperCase();
+  return words[Math.floor(Math.random() * words.length)].split('i').join('İ');
 }
 
 export default gameStateReducer;

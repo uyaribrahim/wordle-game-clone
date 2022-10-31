@@ -1,4 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
+import {words} from '../../constants/words';
 import {
   addChar,
   checkGuess,
@@ -8,6 +9,7 @@ import {
   setCurrentColumn,
   setCurrentRow,
   setGameWon,
+  wrongGuessShake,
 } from '../../redux/actions/gameStateActions';
 
 const useKeyboard = () => {
@@ -22,10 +24,13 @@ const useKeyboard = () => {
   };
 
   const onPressEnter = () => {
-    if (currentColumn !== 5) {
+    const result = gameMap[currentRow].guess.join('');
+
+    if (currentColumn !== 5 || !words.includes(result)) {
+      dispatch(wrongGuessShake(true));
       return;
     }
-    const result = gameMap[currentRow].guess.join('');
+
     dispatch(checkGuess(currentRow));
     if (result === answer) {
       dispatch(setGameWon(true));
