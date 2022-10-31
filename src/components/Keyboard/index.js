@@ -1,62 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {keys} from '../../constants/keys';
-import {
-  addChar,
-  checkGuess,
-  deleteChar,
-} from '../../redux/actions/gameMapActions';
-import {
-  setCurrentColumn,
-  setCurrentRow,
-  setGameWon,
-} from '../../redux/actions/gameStateActions';
 import {keyWidth, styles} from './styles';
+import useKeyboard from './useKeyboard';
 
 const Keyboard = props => {
-  const dispatch = useDispatch();
-  const {answer, isWin, currentColumn, currentRow} = useSelector(
-    state => state.gameState,
-  );
-  const gameMap = useSelector(state => state.gameMap);
-
-  const changeCurrentColumn = value => {
-    dispatch(setCurrentColumn(value));
-  };
+  const {onPressClear, onPressEnter, onPressLetter} = useKeyboard();
+  const isWin = useSelector(state => state.gameState.isWin);
 
   const isLongButton = key => {
     return key === 'ENTER' || key === 'CLEAR';
-  };
-
-  const onPressEnter = () => {
-    if (currentColumn !== 5) {
-      return;
-    }
-    let result = gameMap[currentRow].guess.join('');
-    dispatch(checkGuess(currentRow));
-    if (result === answer) {
-      dispatch(setGameWon(true));
-    }
-    dispatch(setCurrentRow(currentRow + 1));
-    changeCurrentColumn(0);
-  };
-
-  const onPressClear = () => {
-    let prevColumn = currentColumn - 1;
-
-    if (prevColumn < 0) return;
-
-    dispatch(deleteChar(prevColumn, currentRow));
-    changeCurrentColumn(prevColumn);
-  };
-
-  const onPressLetter = key => {
-    if (currentColumn >= 5) {
-      return;
-    }
-    dispatch(addChar(currentColumn, currentRow, key));
-    changeCurrentColumn(currentColumn + 1);
   };
 
   const handleKey = value => {
