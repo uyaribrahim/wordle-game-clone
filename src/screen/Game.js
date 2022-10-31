@@ -1,14 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import Board from '../components/Board';
 import Keyboard from '../components/Keyboard';
 import {colors} from '../constants/colors';
-import {words} from '../constants/words';
 
 const Game = props => {
-  var ANSWER = words[Math.floor(Math.random() * words.length)]
-    .replace('i', 'İ')
-    .toUpperCase();
+  const ANSWER = useSelector(state => state.gameState.answer);
 
   return (
     <View style={styles.container}>

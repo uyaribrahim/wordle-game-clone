@@ -31,5 +31,6 @@ export const styles = StyleSheet.create({
   },
   keyText: {
     color: 'white',
+    fontSize: DEVICE_HEIGHT * 0.018,
   },
 });

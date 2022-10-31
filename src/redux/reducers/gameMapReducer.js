@@ -48,6 +48,9 @@ const gameMapReducer = (state = INITIAL_STATE, action) => {
             }
           : mapRow,
       );
+
+    case 'RESET_GAME_MAP':
+      return INITIAL_STATE;
     default:
       return state;
   }

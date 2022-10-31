@@ -1,17 +1,25 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {Pressable, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {resetGameMap} from '../../redux/actions/gameMapActions';
+import {resetGameState} from '../../redux/actions/gameStateActions';
 import {styles} from './styles';
 
 const Board = ({answer}) => {
   const state = useSelector(state => state);
+  const dispatch = useDispatch();
   const gameMap = state.gameMap;
 
   const arrayAnswer = answer.split('');
 
   const cellHasValue = value => {
     return value !== '';
+  };
+
+  const handleReset = () => {
+    dispatch(resetGameState());
+    dispatch(resetGameMap());
   };
 
   const getColor = (key, index) => {
@@ -51,6 +59,9 @@ const Board = ({answer}) => {
         </View>
       ))}
       <Text style={{color: 'white'}}>{answer}</Text>
+      <Pressable onPress={handleReset}>
+        <Text style={styles.cellText}>Sıfırla</Text>
+      </Pressable>
     </View>
   );
 };

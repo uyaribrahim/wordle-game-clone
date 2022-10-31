@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {keys} from '../../constants/keys';
@@ -7,26 +7,39 @@ import {
   checkGuess,
   deleteChar,
 } from '../../redux/actions/gameMapActions';
+import {
+  setCurrentColumn,
+  setCurrentRow,
+  setGameWon,
+} from '../../redux/actions/gameStateActions';
 import {keyWidth, styles} from './styles';
 
 const Keyboard = props => {
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
-  const [currentRow, setCurrentRow] = useState(0);
-  const [currentColumn, setCurrentColumn] = useState(0);
+  const {answer, isWin, currentColumn, currentRow} = useSelector(
+    state => state.gameState,
+  );
+  const gameMap = useSelector(state => state.gameMap);
+
+  const changeCurrentColumn = value => {
+    dispatch(setCurrentColumn(value));
+  };
 
   const isLongButton = key => {
     return key === 'ENTER' || key === 'CLEAR';
   };
 
   const onPressEnter = () => {
-    let result = state.gameMap[currentRow].guess.join('');
     if (currentColumn !== 5) {
       return;
     }
+    let result = gameMap[currentRow].guess.join('');
     dispatch(checkGuess(currentRow));
-    setCurrentRow(row => row + 1);
-    setCurrentColumn(0);
+    if (result === answer) {
+      dispatch(setGameWon(true));
+    }
+    dispatch(setCurrentRow(currentRow + 1));
+    changeCurrentColumn(0);
   };
 
   const onPressClear = () => {
@@ -35,7 +48,7 @@ const Keyboard = props => {
     if (prevColumn < 0) return;
 
     dispatch(deleteChar(prevColumn, currentRow));
-    setCurrentColumn(prevColumn);
+    changeCurrentColumn(prevColumn);
   };
 
   const onPressLetter = key => {
@@ -43,10 +56,13 @@ const Keyboard = props => {
       return;
     }
     dispatch(addChar(currentColumn, currentRow, key));
-    setCurrentColumn(column => column + 1);
+    changeCurrentColumn(currentColumn + 1);
   };
 
   const handleKey = value => {
+    if (isWin) {
+      return;
+    }
     let key = value.replace('i', 'İ').toUpperCase();
     if (key === 'ENTER') {
       onPressEnter();

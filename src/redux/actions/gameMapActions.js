@@ -13,4 +13,8 @@ const checkGuess = _row => ({
   payload: {row: _row},
 });
 
-export {addChar, deleteChar, checkGuess};
+const resetGameMap = () => ({
+  type: 'RESET_GAME_MAP',
+});
+
+export {addChar, deleteChar, checkGuess, resetGameMap};
