@@ -10,7 +10,7 @@ const INITIAL_STATE = [
 const gameMapReducer = (state = INITIAL_STATE, action) => {
   const row = action?.payload?.row;
   switch (action.type) {
-    case 'ADD_CHAR':
+    case 'SET_CHAR':
       return state.map((mapRow, rowIndex) =>
         rowIndex === row
           ? {
@@ -18,20 +18,6 @@ const gameMapReducer = (state = INITIAL_STATE, action) => {
               guess: mapRow.guess.map((cell, cellIndex) => {
                 if (cellIndex == action.payload.column) {
                   return action.payload.key;
-                }
-                return cell;
-              }),
-            }
-          : mapRow,
-      );
-    case 'DELETE_CHAR':
-      return state.map((mapRow, rowIndex) =>
-        rowIndex === row
-          ? {
-              ...mapRow,
-              guess: mapRow.guess.map((cell, cellIndex) => {
-                if (cellIndex == action.payload.column) {
-                  return '';
                 }
                 return cell;
               }),

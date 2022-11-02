@@ -18,15 +18,15 @@ const Keyboard = props => {
       return;
     }
     let key = value.replace('i', 'İ').toUpperCase();
-    if (key === 'ENTER') {
-      onPressEnter();
+    if (key !== 'ENTER' && key !== 'CLEAR') {
+      onPressLetter(key);
       return;
     }
     if (key === 'CLEAR') {
       onPressClear();
       return;
     }
-    onPressLetter(key);
+    onPressEnter();
   };
 
   return (

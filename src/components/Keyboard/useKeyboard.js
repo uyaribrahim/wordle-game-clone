@@ -1,20 +1,15 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {words} from '../../constants/words';
+import {setChar} from '../../redux/actions/gameMapActions';
 import {
-  addChar,
-  checkGuess,
-  deleteChar,
-} from '../../redux/actions/gameMapActions';
-import {
+  checkWord,
   setCurrentColumn,
-  setCurrentRow,
   setGameWon,
-  wrongGuessShake,
+  setShakeWrongGuess,
 } from '../../redux/actions/gameStateActions';
 
 const useKeyboard = () => {
   const dispatch = useDispatch();
-  const {answer, currentColumn, currentRow} = useSelector(
+  const {answer, currentColumn, currentRow, prevInvalidWord} = useSelector(
     state => state.gameState,
   );
   const gameMap = useSelector(state => state.gameMap);
@@ -25,18 +20,18 @@ const useKeyboard = () => {
 
   const onPressEnter = () => {
     const result = gameMap[currentRow].guess.join('');
-
-    if (currentColumn !== 5 || !words.includes(result)) {
-      dispatch(wrongGuessShake(true));
+    if (currentColumn !== 5) {
+      dispatch(setShakeWrongGuess(true, 'Yeterli harf yok'));
       return;
     }
-
-    dispatch(checkGuess(currentRow));
+    if (prevInvalidWord == result) {
+      dispatch(setShakeWrongGuess(true, 'Kelime listesinde yok'));
+      return;
+    }
+    dispatch(checkWord(result, currentRow));
     if (result === answer) {
       dispatch(setGameWon(true));
     }
-    dispatch(setCurrentRow(currentRow + 1));
-    changeCurrentColumn(0);
   };
 
   const onPressClear = () => {
@@ -44,7 +39,7 @@ const useKeyboard = () => {
 
     if (prevColumn < 0) return;
 
-    dispatch(deleteChar(prevColumn, currentRow));
+    dispatch(setChar(prevColumn, currentRow, ''));
     changeCurrentColumn(prevColumn);
   };
 
@@ -52,7 +47,7 @@ const useKeyboard = () => {
     if (currentColumn >= 5) {
       return;
     }
-    dispatch(addChar(currentColumn, currentRow, key));
+    dispatch(setChar(currentColumn, currentRow, key));
     changeCurrentColumn(currentColumn + 1);
   };
 

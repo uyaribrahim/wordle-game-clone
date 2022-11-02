@@ -1,11 +1,6 @@
-const addChar = (_column, _row, key) => ({
-  type: 'ADD_CHAR',
+const setChar = (_column, _row, key) => ({
+  type: 'SET_CHAR',
   payload: {row: _row, column: _column, key: key},
-});
-
-const deleteChar = (_column, _row) => ({
-  type: 'DELETE_CHAR',
-  payload: {row: _row, column: _column},
 });
 
 const checkGuess = _row => ({
@@ -17,4 +12,4 @@ const resetGameMap = () => ({
   type: 'RESET_GAME_MAP',
 });
 
-export {addChar, deleteChar, checkGuess, resetGameMap};
+export {setChar, checkGuess, resetGameMap};
